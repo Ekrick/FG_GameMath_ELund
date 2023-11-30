@@ -49,6 +49,7 @@ void APlayerActorClass::UpdateMaterial(FVector colorVector)
 	MaterialInstance->SetVectorParameterValue("Parameter Name", colorVector);
 }
 
+//lerps the player position
 void APlayerActorClass::MovePlayer(float DeltaTime)
 {
 	float distanceToTarget = (TargetPosition - GetActorLocation()).Length();

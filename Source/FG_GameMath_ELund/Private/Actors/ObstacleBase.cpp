@@ -51,14 +51,16 @@ void AObstacleBase::CheckPosition()
 		}
 		return;
 	}
-	
+
+	//uses intersection to check if overlapping with player
 	if (TestClass::CheckIfOverlapping(PlayerCharacter, this))
 	{
 		OnPlayerOverlap.Broadcast();
 		bOverlapping = true;
 		return;
 	}
-	
+
+	//uses state/context to see if it has passed the player
 	if (TestClass::CheckIfBehind(PlayerCharacter, this))
 	{
 		bActive = false;
