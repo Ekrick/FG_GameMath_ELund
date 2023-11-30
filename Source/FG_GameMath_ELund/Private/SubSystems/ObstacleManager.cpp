@@ -14,6 +14,8 @@ void UObstacleManager::OnWorldBeginPlay(UWorld& InWorld)
 	LaneArray.Add(RightLane);
 	LaneArray.Add(MiddleLane);
 	LaneArray.Add(LeftLane);
+
+	GenerateNoise();
 }
 
 void UObstacleManager::Tick(float DeltaTime)
@@ -23,16 +25,35 @@ void UObstacleManager::Tick(float DeltaTime)
 	SpawnTimer(DeltaTime);
 }
 
+void UObstacleManager::GenerateNoise()
+{
+	NoiseArray.SetNum(iNoiseArraySize);
+
+	//create randomized array of ints (0, 1, or 2)
+	for (int i = 0 ; i < iNoiseArraySize ; i++)
+	{
+		float noiseValue = FMath::PerlinNoise1D((i * i) / fNoiseConstant);
+		int randomInt = FMath::RoundToInt(noiseValue) +1;
+		NoiseArray[i] = randomInt;
+	}
+}
+
 void UObstacleManager::SpawningObstacles()
 {
-	if (!ObstaclePool) { return; }
+	if (!ObstaclePool || ObstaclePool->IsEmpty()) { return; }
 
-	int iRandomIndex = FMath::RandRange(0,2);
+	//get a spawn point from the noise array
+	int spawnIndex = NoiseArray[iNoiseIndex];
+	iNoiseIndex++;
+	if (iNoiseIndex > iNoiseArraySize)
+	{
+		iNoiseIndex = 0;
+	}
 
 	TObjectPtr<AObstacleBase> obstacle = ObstaclePool->Pool.Pop();
 	ActiveObstacles.Add(obstacle);
 	obstacle->SetSpeedAndActivate(fObstacleSpeed);
-	obstacle->SetActorLocation(LaneArray[iRandomIndex]);
+	obstacle->SetActorLocation(LaneArray[spawnIndex]);
 }
 
 void UObstacleManager::SpawnTimer(float DeltaTime)

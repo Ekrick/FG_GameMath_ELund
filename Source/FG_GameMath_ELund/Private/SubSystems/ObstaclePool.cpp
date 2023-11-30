@@ -6,6 +6,12 @@
 void AObstaclePool::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	TObjectPtr<UObstacleManager> manager = GetWorld()->GetSubsystem<UObstacleManager>();
+	if (manager)
+	{
+		manager->SetPool(this);
+	}
 
 	for (int i = 0; i < iPoolSize; i++)
 	{
@@ -13,5 +19,4 @@ void AObstaclePool::BeginPlay()
 		Pool.Add(Spawned);
 	}
 
-	GetWorld()->GetSubsystem<UObstacleManager>()->SetPool(this);
 }

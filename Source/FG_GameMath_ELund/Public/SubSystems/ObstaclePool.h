@@ -22,6 +22,9 @@ public:
 	UPROPERTY()
 	TArray<TObjectPtr<AObstacleBase>> Pool;
 
+	UFUNCTION()
+	bool IsEmpty() { return Pool.IsEmpty(); }
+
 protected:
 	virtual void BeginPlay() override;
 	

@@ -29,6 +29,15 @@ protected:
 
 private:
 	UPROPERTY()
+	TArray<int> NoiseArray;
+	UPROPERTY()
+	int iNoiseArraySize = 100;
+	UPROPERTY()
+	float fNoiseConstant = 10.f;
+	UPROPERTY()
+	int iNoiseIndex = 0;
+	
+	UPROPERTY()
 	int iSpawnInterval = 2;
 	UPROPERTY()
 	float fTimer = 0;
@@ -49,7 +58,8 @@ private:
 	UPROPERTY()
 	TArray<TObjectPtr<AObstacleBase>> ActiveObstacles;
 
-
+	UFUNCTION()
+	void GenerateNoise();
 	
 	UFUNCTION()
 	void SpawningObstacles();
